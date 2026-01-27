@@ -1,0 +1,197 @@
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: registry-proxy-0.14.0
+  labels:
+    operator.kyma-project.io/module-name: registry-proxy
+  annotations:
+    operator.kyma-project.io/is-cluster-scoped: 'false'
+    source: https://kyma-project.github.io/community-modules/all-modules.yaml
+    lastUpdated: '2026-01-27T09:31:55.166Z'
+spec:
+  moduleName: registry-proxy
+  version: 0.14.0
+  mandatory: false
+  requiresDowntime: false
+  info:
+    repository: https://github.com/kyma-project/registry-proxy.git
+    documentation: https://kyma-project.io/#/registry-proxy/user/README
+    icons:
+      - name: module-icon
+        link: https://raw.githubusercontent.com/kyma-project/kyma/refs/heads/main/docs/assets/logo_icon.svg
+  associatedResources:
+    - group: operator.kyma-project.io
+      kind: RegistryProxy
+      version: v1alpha1
+    - group: registry-proxy.kyma-project.io
+      kind: Connection
+      version: v1alpha1
+  data:
+    apiVersion: operator.kyma-project.io/v1alpha1
+    kind: RegistryProxy
+    metadata:
+      name: default
+      namespace: registry-proxy
+    spec: {}
+  manager:
+    namespace: registry-proxy
+    name: registry-proxy-operator
+    group: apps
+    version: v1
+    kind: Deployment
+  resources:
+    - name: rawManifest
+      link: https://github.com/kyma-project/registry-proxy/releases/download/0.14.0/registry-proxy-operator.yaml
+    - name: defaultResource
+      link: https://github.com/kyma-project/registry-proxy/releases/download/0.14.0/default-registry-proxy-cr.yaml
+  descriptor: {}
+---
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: docker-registry-0.11.0
+  labels:
+    operator.kyma-project.io/module-name: docker-registry
+  annotations:
+    operator.kyma-project.io/is-cluster-scoped: 'false'
+    source: https://kyma-project.github.io/community-modules/all-modules.yaml
+    lastUpdated: '2026-01-27T09:31:55.167Z'
+spec:
+  moduleName: docker-registry
+  version: 0.11.0
+  mandatory: false
+  requiresDowntime: false
+  info:
+    repository: https://github.com/kyma-project/docker-registry.git
+    documentation: https://kyma-project.io/#/docker-registry/user/README
+    icons:
+      - name: module-icon
+        link: https://raw.githubusercontent.com/kyma-project/kyma/refs/heads/main/docs/assets/logo_icon.svg
+  associatedResources:
+    - group: operator.kyma-project.io
+      version: v1alpha1
+      kind: DockerRegistry
+  data:
+    apiVersion: operator.kyma-project.io/v1alpha1
+    kind: DockerRegistry
+    metadata:
+      name: default
+      namespace: kyma-system
+    spec: {}
+  manager:
+    name: dockerregistry-operator
+    namespace: kyma-system
+    group: apps
+    version: v1
+    kind: Deployment
+  resources:
+    - name: rawManifest
+      link: https://github.com/kyma-project/docker-registry/releases/download/0.11.0/dockerregistry-operator.yaml
+    - name: defaultResource
+      link: https://github.com/kyma-project/docker-registry/releases/download/0.11.0/default-dockerregistry-cr.yaml
+  descriptor: {}
+---
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: cap-operator-0.23.0
+  labels:
+    operator.kyma-project.io/module-name: cap-operator
+  annotations:
+    operator.kyma-project.io/is-cluster-scoped: 'false'
+    source: https://kyma-project.github.io/community-modules/all-modules.yaml
+    lastUpdated: '2026-01-27T09:31:55.168Z'
+spec:
+  moduleName: cap-operator
+  version: 0.23.0
+  mandatory: false
+  requiresDowntime: false
+  info:
+    repository: https://github.com/SAP/cap-operator-lifecycle.git
+    documentation: https://sap.github.io/cap-operator
+    icons:
+      - name: module-icon
+        link: https://raw.githubusercontent.com/kyma-project/kyma/refs/heads/main/docs/assets/logo_icon.svg
+  associatedResources:
+    - group: operator.sme.sap.com
+      version: v1alpha1
+      kind: CAPOperator
+  data:
+    apiVersion: operator.sme.sap.com/v1alpha1
+    kind: CAPOperator
+    metadata:
+      labels:
+        app.kubernetes.io/component: cap-operator-manager
+        app.kubernetes.io/instance: cap-operator
+        app.kubernetes.io/name: cap-operator
+        app.kubernetes.io/part-of: cap-operator-manager
+        app.kubernetes.io/version: 0.23.0
+        kyma-project.io/module: cap-operator
+      name: cap-operator
+    spec:
+      ingressGatewayLabels:
+        - name: istio
+          value: ingressgateway
+        - name: app
+          value: istio-ingressgateway
+      subscriptionServer:
+        subDomain: cap-op
+  manager:
+    name: cap-operator-controller-manager
+    namespace: cap-operator-system
+    group: apps
+    version: v1
+    kind: Deployment
+  resources:
+    - name: rawManifest
+      link: https://github.com/SAP/cap-operator-lifecycle/releases/download/0.23.0/manager_manifest.yaml
+    - name: defaultResource
+      link: https://github.com/SAP/cap-operator-lifecycle/releases/download/0.23.0/manager_default_CR.yaml
+  descriptor: {}
+---
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: gpu-operator-1.0.0
+  labels:
+    operator.kyma-project.io/module-name: gpu-operator
+  annotations:
+    operator.kyma-project.io/is-cluster-scoped: 'false'
+    source: https://kyma-project.github.io/community-modules/all-modules.yaml
+    lastUpdated: '2026-01-27T19:00:00.000Z'
+spec:
+  moduleName: gpu-operator
+  version: 1.0.0
+  mandatory: false
+  requiresDowntime: false
+  info:
+    repository: https://github.com/jacekon/gpu-operator.git
+    documentation: https://github.com/jacekon/gpu-operator/blob/main/README.md
+    icons:
+      - name: module-icon
+        link: https://raw.githubusercontent.com/kyma-project/kyma/refs/heads/main/docs/assets/logo_icon.svg
+  associatedResources:
+    - group: operator.kyma-project.io
+      version: v1alpha1
+      kind: GpuOperator
+  data:
+    apiVersion: operator.kyma-project.io/v1alpha1
+    kind: GpuOperator
+    metadata:
+      name: default
+      namespace: kyma-system
+    spec:
+      driverVersion: "570"
+      namespace: gpu-operator
+  manager:
+    name: gpu-operator-controller-manager
+    namespace: gpu-operator-system
+    group: apps
+    version: v1
+    kind: Deployment
+  resources:
+    - name: rawManifest
+      link: https://github.com/jacekon/gpu-operator/releases/download/v1.0.0/gpu-operator.yaml
+    - name: defaultResource
+      link: https://github.com/jacekon/gpu-operator/releases/download/v1.0.0/default-gpuoperator-cr.yaml
+  descriptor: {}
