@@ -1,0 +1,48 @@
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: gpu-operator-1.0.0
+  namespace: kyma-system
+  labels:
+    operator.kyma-project.io/module-name: gpu-operator
+    operator.kyma-project.io/component: infrastructure
+  annotations:
+    operator.kyma-project.io/doc-url: "https://github.com/jacekon/gpu-operator"
+    operator.kyma-project.io/nvidia-driver-version: "570"
+spec:
+  channel: fast
+  moduleName: gpu-operator
+  version: 1.0.0
+  
+  # This is the default CR that will be created when you enable the module
+  data:
+    apiVersion: operator.kyma-project.io/v1alpha1
+    kind: GpuOperator
+    metadata:
+      name: default
+    spec:
+      driverVersion: "570"
+      namespace: gpu-operator
+  
+  # Descriptor pointing to the installation manifest on GitHub
+  descriptor:
+    component:
+      componentReferences: []
+      name: github.com/jacekon/gpu-operator
+      version: 1.0.0
+      provider: community
+      repositoryContexts:
+      - type: GitRepository
+        baseUrl: https://github.com/jacekon/gpu-operator
+      resources:
+      - name: raw-manifest
+        version: 1.0.0
+        type: yaml
+        relation: external
+        access:
+          type: github
+          repoUrl: https://github.com/jacekon/gpu-operator
+          commit: main
+      sources: []
+  
+  target: remote

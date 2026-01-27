@@ -1,0 +1,43 @@
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: gpu-operator-1.0.0
+  namespace: kyma-system
+  labels:
+    operator.kyma-project.io/module-name: gpu-operator
+    operator.kyma-project.io/component: infrastructure
+  annotations:
+    operator.kyma-project.io/doc-url: "https://github.com/jacekon/gpu-operator"
+    operator.kyma-project.io/nvidia-driver-version: "570"
+spec:
+  channel: fast
+  moduleName: gpu-operator
+  version: 1.0.0
+  # This is the raw manifest that will be applied by the Lifecycle Manager
+  data:
+    apiVersion: operator.kyma-project.io/v1alpha1
+    kind: GpuOperator
+    metadata:
+      name: default
+      namespace: default
+    spec:
+      driverVersion: "570"
+      namespace: gpu-operator
+  # The descriptor points to where the actual module resources are located
+  # Since we're installing locally without OCI registry, we'll embed the manifest directly
+  descriptor:
+    component:
+      componentReferences: []
+      name: kyma-project.io/module/gpu-operator
+      provider: internal
+      repositoryContexts: []
+      resources:
+      - name: raw-manifest
+        relation: local
+        type: yaml
+        version: 1.0.0
+      sources: []
+      version: 1.0.0
+  # This tells the Lifecycle Manager where to find the actual Kubernetes resources
+  # For a local installation without OCI, we can use an inline approach
+  target: remote

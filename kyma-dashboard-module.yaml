@@ -1,0 +1,33 @@
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: gpu-operator
+  namespace: kyma-system
+  labels:
+    operator.kyma-project.io/module-name: gpu-operator
+spec:
+  channel: fast
+  data:
+    apiVersion: operator.kyma-project.io/v1alpha1
+    kind: GpuOperator
+    metadata:
+      name: default
+      namespace: kyma-system
+    spec:
+      driverVersion: "570"
+      namespace: gpu-operator
+  descriptor:
+    component:
+      componentReferences: []
+      name: github.com/jacekon/gpu-operator
+      version: 1.0.0
+      provider: community
+      resources:
+      - name: raw-manifest
+        version: 1.0.0
+        type: helm-chart
+        relation: external
+        access:
+          type: helm
+          helmChart: gpu-operator
+          repository: https://github.com/jacekon/gpu-operator

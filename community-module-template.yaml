@@ -1,0 +1,47 @@
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: gpu-operator-1.0.0
+  namespace: kyma-system
+  labels:
+    operator.kyma-project.io/module-name: gpu-operator
+    operator.kyma-project.io/managed-by: community
+  annotations:
+    operator.kyma-project.io/doc-url: "https://github.com/jacekon/gpu-operator"
+    operator.kyma-project.io/nvidia-driver-version: "570"
+spec:
+  # Module identification
+  moduleName: gpu-operator
+  version: 1.0.0
+  channel: fast
+  
+  # Default CR that will be created when the module is enabled
+  data:
+    apiVersion: operator.kyma-project.io/v1alpha1
+    kind: GpuOperator
+    metadata:
+      name: default
+      namespace: kyma-system
+    spec:
+      driverVersion: "570"
+      namespace: gpu-operator
+  
+  # Descriptor pointing to the module resources
+  descriptor:
+    component:
+      componentReferences: []
+      name: github.com/jacekon/gpu-operator
+      provider: community
+      version: 1.0.0
+      resources:
+      - name: raw-manifest
+        relation: external
+        type: yaml
+        version: 1.0.0
+        access:
+          type: ociArtifact
+          imageReference: ghcr.io/jacekon/gpu-operator-manifest:latest
+      sources: []
+  
+  # Target cluster (remote means SKR cluster, not KCP)
+  target: remote
