@@ -1,0 +1,78 @@
+# NVIDIA GPU Operator values for Garden Linux (Kyma)
+# Based on https://github.com/SAP-samples/kyma-runtime-samples/blob/main/gpu/gpu-operator-values.yaml
+
+# Operator configuration
+operator:
+  defaultRuntime: containerd
+  runtimeClass: nvidia
+
+# Driver configuration for Garden Linux
+driver:
+  enabled: true
+  version: "570"
+  
+  # Garden Linux specific settings
+  manager:
+    env:
+      - name: ENABLE_AUTO_DRAIN
+        value: "false"
+      - name: DRAIN_USE_FORCE
+        value: "false"
+      - name: DRAIN_POD_SELECTOR_LABEL
+        value: ""
+      - name: DRAIN_TIMEOUT_SECONDS
+        value: "0s"
+      - name: DRAIN_DELETE_EMPTYDIR_DATA
+        value: "false"
+  
+  # Use pre-compiled drivers for faster installation
+  usePrecompiled: true
+
+# Toolkit configuration
+toolkit:
+  enabled: true
+
+# Device plugin configuration
+devicePlugin:
+  enabled: true
+  config:
+    name: time-slicing-config
+    default: "any"
+
+# DCGM (Data Center GPU Manager) exporter for monitoring
+dcgmExporter:
+  enabled: true
+
+# GPU Feature Discovery
+gfd:
+  enabled: true
+
+# Node Feature Discovery (optional, can be disabled if already installed)
+nfd:
+  enabled: false
+
+# MIG (Multi-Instance GPU) Manager
+migManager:
+  enabled: false
+
+# DCGM configuration
+dcgm:
+  enabled: true
+
+# Validator configuration
+validator:
+  driver:
+    env:
+      - name: DISABLE_DEV_CHAR_SYMLINK_CREATION
+        value: "true"
+
+# Node selector to target GPU nodes
+# Adjust based on your cluster's node labels
+nodeSelector:
+  workload: gpu
+
+# Tolerations for GPU nodes
+tolerations:
+  - key: nvidia.com/gpu
+    operator: Exists
+    effect: NoSchedule

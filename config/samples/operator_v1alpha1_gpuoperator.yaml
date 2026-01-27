@@ -1,0 +1,23 @@
+apiVersion: operator.kyma-project.io/v1alpha1
+kind: GpuOperator
+metadata:
+  name: gpuoperator-sample
+  namespace: default
+spec:
+  # Driver version compatible with Garden Linux in Kyma
+  driverVersion: "570"
+  
+  # Namespace where GPU operator will be installed
+  namespace: gpu-operator
+  
+  # Optional: Specify a ConfigMap with custom Helm values
+  # valuesConfigMapName: custom-gpu-operator-values
+  
+  # Optional: Resource requirements
+  # resources:
+  #   limits:
+  #     cpu: "1"
+  #     memory: 1Gi
+  #   requests:
+  #     cpu: 100m
+  #     memory: 256Mi

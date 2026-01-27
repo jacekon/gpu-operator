@@ -1,0 +1,10 @@
+module-name: gpu-operator
+rc-tag: 1.0.0
+protecode:
+  - europe-docker.pkg.dev/kyma-project/prod/gpu-operator:1.0.0
+whitesource:
+  language: golang-mod
+  subprojects: false
+  exclude:
+    - "**/test/**"
+    - "**/*_test.go"

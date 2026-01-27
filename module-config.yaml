@@ -1,0 +1,65 @@
+name: kyma-project.io/module/gpu-operator
+version: 1.0.0
+channel: regular
+manifest: gpu-operator.yaml
+
+# Repository information
+repository: https://github.com/kyma-project/gpu-operator
+
+# Documentation
+documentation: https://github.com/kyma-project/gpu-operator/blob/main/README.md
+
+# Icons for UI
+icons:
+  - name: gpu-operator
+    url: https://raw.githubusercontent.com/kyma-project/community/main/guidelines/templates/resources/kyma-icon.svg
+
+# Default CR for the module
+defaultCR: config/samples/operator_v1alpha1_gpuoperator.yaml
+
+# Module is not mandatory
+mandatory: false
+
+# Security scanners configuration
+security: sec-scanners-config.yaml
+
+# Labels for ModuleTemplate
+labels:
+  operator.kyma-project.io/module-name: gpu-operator
+  operator.kyma-project.io/component: infrastructure
+
+# Annotations for ModuleTemplate
+annotations:
+  operator.kyma-project.io/doc-url: https://github.com/kyma-project/gpu-operator/blob/main/README.md
+  operator.kyma-project.io/nvidia-driver-version: "570"
+
+# Manager deployment that indicates installation readiness
+manager:
+  name: gpu-operator-controller-manager
+  namespace: gpu-operator-system
+  groupVersionKind:
+    group: apps
+    version: v1
+    kind: Deployment
+
+# Resources to be cleaned up with module deletion
+associatedResources:
+  - group: ""
+    version: v1
+    kind: Namespace
+    name: gpu-operator
+  - group: rbac.authorization.k8s.io
+    version: v1
+    kind: ClusterRole
+    name: gpu-operator
+  - group: rbac.authorization.k8s.io
+    version: v1
+    kind: ClusterRoleBinding
+    name: gpu-operator
+
+# Module namespace
+namespace: kcp-system
+
+# Module is stable (not internal or beta)
+internal: false
+beta: false
