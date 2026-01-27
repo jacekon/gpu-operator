@@ -1,8 +1,34 @@
+---
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
   name: manager-role
 rules:
+- apiGroups:
+  - ""
+  resources:
+  - configmaps
+  - namespaces
+  - serviceaccounts
+  verbs:
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
 - apiGroups:
   - operator.kyma-project.io
   resources:
@@ -30,8 +56,14 @@ rules:
   - patch
   - update
 - apiGroups:
-  - "*"
+  - rbac.authorization.k8s.io
   resources:
-  - "*"
+  - clusterrolebindings
+  - clusterroles
   verbs:
-  - "*"
+  - create
+  - get
+  - list
+  - patch
+  - update
+  - watch

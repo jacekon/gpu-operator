@@ -6,16 +6,30 @@
 
 The GPU Operator Kyma module enables GPU workloads in Kyma clusters by automating the installation and management of NVIDIA GPU Operator. This module is specifically designed to work with Garden Linux-based Kyma clusters and provides a declarative way to enable GPU support.
 
-This module wraps the NVIDIA GPU Operator installation as described in the [SAP Kyma Runtime GPU Sample](https://github.com/SAP-samples/kyma-runtime-samples/blob/main/gpu/README.md), making it easy to use GPU capabilities in other modules (such as LLM deployment modules).
+This module wraps the NVIDIA GPU Operator installation following the [Gardener AI Conformance Guide v1.33](https://github.com/gardener/gardener-ai-conformance/blob/main/v1.33/NVIDIA-GPU-Operator.md), ensuring compatibility with Garden Linux environments. The installation uses Helm with Garden Linux-optimized values to provide GPU capabilities for AI/ML workloads and LLM deployment modules.
+
+**Architecture**: The controller creates Kubernetes Jobs that execute Helm commands to install and manage the NVIDIA GPU Operator, following Kyma's pattern of programmatic resource creation while adhering to Gardener's installation requirements.
 
 ## Features
 
 - **Declarative GPU Operator Management**: Install and configure NVIDIA GPU Operator using Kubernetes Custom Resources
+- **Gardener AI Conformance**: Follows the official Gardener AI conformance guide for GPU operator installation
 - **Garden Linux Optimized**: Pre-configured values for Garden Linux kernel compatibility (driver version 570)
 - **Kyma Integration**: Follows Kyma module conventions with proper state management and conditions
+- **Helm-based Installation**: Uses Kubernetes Jobs to execute Helm commands following Gardener best practices
 - **Automatic Resource Management**: Handles namespace creation, RBAC, and cleanup
-- **Customizable Configuration**: Support for custom Helm values via ConfigMaps
+- **Customizable Configuration**: Support for custom Helm values via ConfigMaps (merged with Gardener base values)
 - **Status Reporting**: Clear status conditions indicating the health of GPU operator installation
+
+## Architecture
+
+This module implements a two-layer architecture that aligns with both Kyma and Gardener patterns:
+
+1. **Kyma Lifecycle Manager** installs and manages this module's controller
+2. **GPU Operator Controller** creates Kubernetes Jobs that execute Helm commands
+3. **Helm Installation Jobs** install the NVIDIA GPU Operator following the [Gardener AI Conformance Guide](https://github.com/gardener/gardener-ai-conformance/blob/main/v1.33/NVIDIA-GPU-Operator.md)
+
+The controller programmatically creates Jobs (following Kyma patterns) that execute Helm install commands (following Gardener requirements), ensuring compatibility with both ecosystems while maintaining proper lifecycle management.
 
 ## Prerequisites
 
