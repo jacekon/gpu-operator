@@ -1,0 +1,66 @@
+apiVersion: operator.kyma-project.io/v1beta2
+kind: ModuleTemplate
+metadata:
+  name: gpu-operator-1.0.0
+  namespace: kyma-system
+  labels:
+    operator.kyma-project.io/module-name: gpu-operator
+  annotations:
+    operator.kyma-project.io/is-cluster-scoped: "false"
+spec:
+  moduleName: gpu-operator
+  version: 1.0.0
+  channel: fast
+  
+  # Associated CRD
+  associatedResources:
+  - group: operator.kyma-project.io
+    kind: GpuOperator
+    version: v1alpha1
+  
+  # Default CR created when module is enabled
+  data:
+    apiVersion: operator.kyma-project.io/v1alpha1
+    kind: GpuOperator
+    metadata:
+      name: default
+    spec:
+      driverVersion: "570"
+      namespace: gpu-operator
+  
+  # Module info
+  info:
+    repository: https://github.com/jacekon/gpu-operator
+    documentation: https://github.com/jacekon/gpu-operator/blob/main/README.md
+    icons:
+    - name: module-icon
+      link: https://raw.githubusercontent.com/kyma-project/kyma/refs/heads/main/docs/assets/logo_icon.svg
+  
+  # Manager deployment info
+  manager:
+    name: gpu-operator-controller-manager
+    namespace: gpu-operator-system
+    group: apps
+    version: v1
+    kind: Deployment
+  
+  # Module descriptor pointing to GitHub raw manifest
+  descriptor:
+    component:
+      name: github.com/jacekon/gpu-operator
+      version: 1.0.0
+      provider: community
+      componentReferences: []
+      repositoryContexts:
+      - type: GitRepository
+        baseUrl: https://github.com/jacekon/gpu-operator
+      resources:
+      - name: raw-manifest
+        version: 1.0.0
+        type: yaml
+        relation: external
+        access:
+          type: github
+          repoUrl: https://github.com/jacekon/gpu-operator
+          ref: main
+      sources: []
